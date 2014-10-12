@@ -1,0 +1,43 @@
+﻿<Window x:Class="CSAdminsTime.EditSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:custom="clr-namespace:CSAdminsTime"
+        xmlns:properties="clr-namespace:CSAdminsTime.Properties"
+        xmlns:common="clr-namespace:CSAdminsTime.Common;assembly=CSAdminsTime.Common"
+        Title="{x:Static properties:Strings.Settings}" Height="120" Width="300" WindowStartupLocation="CenterScreen">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static custom:CommonCommands.SaveCommand}"
+                    Executed="ExecutedSaveCommand" />
+        <CommandBinding Command="{x:Static custom:CommonCommands.CancelCommand}"
+                    Executed="ExecutedCancelCommand" />
+    </Window.CommandBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Label Content="{x:Static properties:Strings.Update_period}" Grid.Row="0" Grid.Column="0" />
+            <TextBox Text="{Binding Path=UpdatePeriod, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" />
+
+            <Label Content="{x:Static properties:Strings.Language}" Grid.Row="1" Grid.Column="0" />
+            <ComboBox ItemsSource="{x:Static common:LanguageConfigurationHelper.Languages}" SelectedValue="{Binding Path=LanguageConfiguration}" SelectedValuePath="Key" DisplayMemberPath="Value" Grid.Row="1" Grid.Column="1" />
+
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Content="{x:Static properties:Strings.Save}" Command="{x:Static custom:CommonCommands.SaveCommand}" Margin="6" IsDefault="True" />
+            <Button Content="{x:Static properties:Strings.Cancel}" Command="{x:Static custom:CommonCommands.CancelCommand}" Margin="6" IsCancel="True" />
+        </StackPanel>
+
+    </Grid>
+</Window>

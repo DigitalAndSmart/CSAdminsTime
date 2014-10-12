@@ -1,0 +1,39 @@
+﻿<Window x:Class="CSAdminsTime.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:properties="clr-namespace:CSAdminsTime.Properties"
+        Title="{x:Static properties:Strings.About}" Height="180" Width="300" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Margin="4px">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50px" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Image Source="..\Resources\digital-and-smart-logo.png" Width="200px" Height="50px" HorizontalAlignment="Center" Grid.Row="0"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 4px">
+            <TextBlock Text="{x:Static properties:Strings.Website}"/>
+            <TextBlock Text=": "/>
+            <TextBlock>
+                <Hyperlink NavigateUri="http://digitalandsmart.com" RequestNavigate="Hyperlink_OnRequestNavigate">
+                    <TextBlock Text="http://digitalandsmart.com" />
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 4px">
+            <TextBlock Text="{x:Static properties:Strings.Email}"/>
+            <TextBlock Text=": "/>
+            <TextBlock>
+                <Hyperlink NavigateUri="mailto:products@digitalandsmart.com" RequestNavigate="Hyperlink_OnRequestNavigate">
+                    <TextBlock Text="products@digitalandsmart.com" />
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal"  Margin="0 4px">
+            <TextBlock Text="{x:Static properties:Strings.Version}"/>
+            <TextBlock Text=": "/>
+            <TextBlock Text="{Binding Path=ApplicationVersion}" />
+        </StackPanel>
+    </Grid>
+</Window>

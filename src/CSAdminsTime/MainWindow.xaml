@@ -1,0 +1,365 @@
+﻿<Window x:Class="CSAdminsTime.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:custom="clr-namespace:CSAdminsTime" xmlns:properties="clr-namespace:CSAdminsTime.Properties"
+        Title="CSAdminsTime" Height="750" Width="1000" WindowStartupLocation="CenterScreen">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static custom:MainWindow.SaveCommand}"
+                    Executed="ExecutedSaveCommand"
+                    CanExecute="CanExecuteSaveCommand" />
+        <CommandBinding Command="{x:Static custom:MainWindow.SettingsCommand}"
+                    Executed="ExecutedSettingsCommand" />
+        <CommandBinding Command="{x:Static custom:MainWindow.StartCommand}"
+                    Executed="ExecutedStartCommand"
+                    CanExecute="CanExecuteStartCommand" />
+        <CommandBinding Command="{x:Static custom:MainWindow.StopCommand}"
+                    Executed="ExecutedStopCommand"
+                    CanExecute="CanExecuteStopCommand" />
+        <CommandBinding Command="{x:Static custom:MainWindow.AboutCommand}"
+                    Executed="ExecutedAboutCommand" />
+        <CommandBinding Command="{x:Static custom:MainWindow.AddServerCommand}"
+                    Executed="ExecutedAddServerCommand" />
+        <CommandBinding Command="{x:Static custom:MainWindow.EditServerCommand}"
+                    Executed="ExecutedEditServerCommand" />
+        <CommandBinding Command="{x:Static custom:MainWindow.DeleteServerCommand}"
+                    Executed="ExecutedDeleteServerCommand" />
+        <CommandBinding Command="{x:Static custom:MainWindow.AddAdminCommand}"
+                    Executed="ExecutedAddAdminCommand" />
+        <CommandBinding Command="{x:Static custom:MainWindow.EditAdminCommand}"
+                    Executed="ExecutedEditAdminCommand" />
+        <CommandBinding Command="{x:Static custom:MainWindow.DeleteAdminCommand}"
+                    Executed="ExecutedDeleteAdminCommand" />
+        <CommandBinding Command="{x:Static custom:MainWindow.AddRelatedAdminCommand}"
+                    Executed="ExecutedAddRelatedAdminCommand"
+                    CanExecute="CanExecuteAddRelatedAdminCommand" />
+        <CommandBinding Command="{x:Static custom:MainWindow.RemoveRelatedAdminCommand}"
+                    Executed="ExecutedRemoveRelatedAdminCommand"
+                    CanExecute="CanExecuteRemoveRelatedAdminCommand" />
+    </Window.CommandBindings>
+
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="16px" />
+            <Setter Property="Height" Value="16px" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Opacity" Value="1.0" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False" >
+                    <Setter Property="Opacity" Value="0.1" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="Button">
+            <Setter Property="Opacity" Value="1.0" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False" >
+                    <Setter Property="Opacity" Value="0.1" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ToolbarAddButton" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" TargetType="Button">
+            <Setter Property="Opacity" Value="1.0" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False" >
+                    <Setter Property="Opacity" Value="0.1" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type ToolBar}">
+            <Setter Property="ToolBarTray.IsLocked" Value="True" />
+        </Style>
+        <Style TargetType="{x:Type Paragraph}">
+            <Setter Property="Margin" Value="0" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <ToolBar Grid.Row="0">
+            <Button Command="{x:Static custom:MainWindow.SaveCommand}" ToolTip="{x:Static properties:Strings.Save_configuration }">
+                <Image Source="Resources\save.png" />
+            </Button>
+            <Button Command="{x:Static custom:MainWindow.SettingsCommand}" ToolTip="{x:Static properties:Strings.Edit_settings }">
+                <Image Source="Resources\settings.png" />
+            </Button>
+            <Button Command="{x:Static custom:MainWindow.StartCommand}" ToolTip="{x:Static properties:Strings.Start_execution }">
+                <Image Source="Resources\start.png" />
+            </Button>
+            <Button Command="{x:Static custom:MainWindow.StopCommand}" ToolTip="{x:Static properties:Strings.Stop_execution }">
+                <Image Source="Resources\stop.png" />
+            </Button>
+            <Button Command="{x:Static custom:MainWindow.AboutCommand}" ToolTip="{x:Static properties:Strings.About }">
+                <Image Source="Resources\about.png" />
+            </Button>
+        </ToolBar>
+
+        <TabControl Grid.Row="1">
+            <TabItem Header="{x:Static properties:Strings.Servers }">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <ToolBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                        <Button Command="{x:Static custom:MainWindow.AddServerCommand}" CommandParameter="{Binding}" ToolTip="{x:Static properties:Strings.Add_new_server }">
+                            <Image Source="Resources\add.png" />
+                        </Button>
+                    </ToolBar>
+
+                    <ListView Grid.Column="0" Grid.Row="1" Name="ServersGrid" ItemsSource="{Binding Path=Servers}" SelectedValuePath="Id" SelectionChanged="ServersGrid_OnSelectionChanged" SelectionMode="Single">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="{x:Static properties:Strings.Title }" Width="150px">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=Title}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Strings.Path }" Width="300px">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=Path}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Strings.Edit }">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Command="{x:Static custom:MainWindow.EditServerCommand}" CommandParameter="{Binding}">
+                                                <Image Source="Resources\edit.png" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Strings.Delete }">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Command="{x:Static custom:MainWindow.DeleteServerCommand}" CommandParameter="{Binding}">
+                                                <Image Source="Resources\delete.png" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <GridSplitter Grid.Column="1" Grid.Row="1" ShowsPreview="True" ResizeDirection="Columns" Width="4px" ResizeBehavior="PreviousAndNext" Margin="4,0" Background="DarkGray" />
+
+                    <Grid Grid.Column="2" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="2*" />
+                        </Grid.RowDefinitions>
+
+                        <ListView Grid.Row="0" Name="RelatedAdminsGrid" ItemsSource="{Binding Path=RelatedAdmins}" SelectionMode="Multiple" >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="{x:Static properties:Strings.Real_name }">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=RealName}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="{x:Static properties:Strings.Name_IP_Steamid }">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=NameIPSteamid}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="{x:Static properties:Strings.Access_flags }">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=AccessFlagsString}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="{x:Static properties:Strings.Connection_flags }">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=ConnectionFlagsString}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="0, 6">
+                            <Button Command="{x:Static custom:MainWindow.AddRelatedAdminCommand}" CommandParameter="{Binding ElementName=AdminsForAddGrid, Path=SelectedItems}" ToolTip="{x:Static properties:Strings.Add_admin_to_server }">
+                                <Image Source="Resources\up.png" />
+                            </Button>
+                            <Button Command="{x:Static custom:MainWindow.RemoveRelatedAdminCommand}" CommandParameter="{Binding ElementName=RelatedAdminsGrid, Path=SelectedItems}" ToolTip="{x:Static properties:Strings.Remove_admin_from_server }">
+                                <Image Source="Resources\down.png" />
+                            </Button>
+                        </StackPanel>
+
+                        <ListView Grid.Row="2" Name="AdminsForAddGrid" ItemsSource="{Binding Path=AdminsForAdd}" SelectionMode="Multiple">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="{x:Static properties:Strings.Real_name }">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=RealName}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="{x:Static properties:Strings.Name_IP_Steamid }">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=NameIPSteamid}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="{x:Static properties:Strings.Access_flags }">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=AccessFlagsString}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="{x:Static properties:Strings.Connection_flags }">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=ConnectionFlagsString}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                    </Grid>
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem Header="{x:Static properties:Strings.Admins}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <ToolBar Grid.Row="0">
+                        <Button Command="{x:Static custom:MainWindow.AddAdminCommand}" CommandParameter="{Binding}" ToolTip="{x:Static properties:Strings.Add_new_admin }">
+                            <Image Source="Resources\add.png" />
+                        </Button>
+                    </ToolBar>
+
+                    <ListView Grid.Row="1" Name="AdminsGrid" ItemsSource="{Binding Path=Admins}" SelectedValuePath="Id" SelectionMode="Single">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="{x:Static properties:Strings.Real_name }">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=RealName}"></TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Strings.Name_IP_Steamid }">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=NameIPSteamid}"></TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Strings.Access_flags }">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=AccessFlagsString}"></TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Strings.Connection_flags }">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=ConnectionFlagsString}"></TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Strings.Start_date }">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=StartDateString}"></TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Strings.End_date }">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=EndDateString}"></TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Strings.Start_time }">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=StartTimeString}"></TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Strings.End_time }">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=EndTimeString}"></TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Strings.Edit }">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Command="{x:Static custom:MainWindow.EditAdminCommand}" CommandParameter="{Binding}">
+                                                <Image Source="Resources\edit.png" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Strings.Delete }">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Command="{x:Static custom:MainWindow.DeleteAdminCommand}" CommandParameter="{Binding}">
+                                                <Image Source="Resources\delete.png" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                </Grid>
+
+            </TabItem>
+        </TabControl>
+
+        <GridSplitter Grid.Row="2" ShowsPreview="True" ResizeDirection="Rows" Height="4px" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,4" Background="DarkGray" />
+
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="{x:Static properties:Strings.Logs}" />
+            <RichTextBox  Grid.Row="1" x:Name="LogsRichTextBox" IsReadOnly="True" Height="Auto" VerticalScrollBarVisibility="Visible" />
+        </Grid>
+
+    </Grid>
+</Window>

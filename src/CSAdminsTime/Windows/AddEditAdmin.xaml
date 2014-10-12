@@ -1,0 +1,74 @@
+﻿<Window x:Class="CSAdminsTime.AddEditAdmin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:custom="clr-namespace:CSAdminsTime"
+        xmlns:properties="clr-namespace:CSAdminsTime.Properties"
+        Height="300" Width="500" WindowStartupLocation="CenterScreen">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static custom:CommonCommands.SaveCommand}"
+                    Executed="ExecutedSaveCommand" />
+        <CommandBinding Command="{x:Static custom:CommonCommands.CancelCommand}"
+                    Executed="ExecutedCancelCommand" />
+    </Window.CommandBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="220px" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Label Content="{x:Static properties:Strings.Real_name }" Grid.Row="0" Grid.Column="0" />
+            <TextBox Text="{Binding Path=RealName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" />
+
+            <Label Content="{x:Static properties:Strings.Name_IP_Steamid }" Grid.Row="1" Grid.Column="0" />
+            <TextBox Text="{Binding Path=NameIPSteamid, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" />
+
+            <Label Content="{x:Static properties:Strings.Password }" Grid.Row="2" Grid.Column="0" />
+            <TextBox Text="{Binding Path=Password, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" />
+
+            <Label Content="{x:Static properties:Strings.Access_flags }" Grid.Row="3" Grid.Column="0" />
+            <TextBox Text="{Binding Path=AccessFlags, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" PreviewTextInput="AccessFlagsTextBoxOnPreviewTextInput" DataObject.Pasting="AccessFlagsTextBoxOnPasting" />
+            <Label Content="abcdefghijklmnopqrstuz" Grid.Row="3" Grid.Column="2" />
+            
+            <Label Content="{x:Static properties:Strings.Connection_flags }" Grid.Row="4" Grid.Column="0" />
+            <TextBox Text="{Binding Path=ConnectionFlags, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1" PreviewTextInput="ConnectionFlagsTextBoxOnPreviewTextInput" DataObject.Pasting="ConnectionFlagsTextBoxOnPasting" />
+            <Label Content="abcde" Grid.Row="4" Grid.Column="2" />
+
+            <Label Content="{x:Static properties:Strings.Start_date }" Grid.Row="5" Grid.Column="0" />
+            <TextBox Text="{Binding Path=StartDate, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="1" />
+
+            <Label Content="{x:Static properties:Strings.End_date }" Grid.Row="6" Grid.Column="0" />
+            <TextBox Text="{Binding Path=EndDate, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" />
+
+            <Label Content="{x:Static properties:Strings.Start_time }" Grid.Row="7" Grid.Column="0" />
+            <TextBox Text="{Binding Path=StartTime, UpdateSourceTrigger=PropertyChanged}" Grid.Row="7" Grid.Column="1" />
+
+            <Label Content="{x:Static properties:Strings.End_time }" Grid.Row="8" Grid.Column="0" />
+            <TextBox Text="{Binding Path=EndTime, UpdateSourceTrigger=PropertyChanged}" Grid.Row="8" Grid.Column="1" />
+
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Content="{x:Static properties:Strings.Save }" Command="{x:Static custom:CommonCommands.SaveCommand}" Margin="6" IsDefault="True" />
+            <Button Content="{x:Static properties:Strings.Cancel }" Command="{x:Static custom:CommonCommands.CancelCommand}" Margin="6" IsCancel="True" />
+        </StackPanel>
+
+    </Grid>
+</Window>
